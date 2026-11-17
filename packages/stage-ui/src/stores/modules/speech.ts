@@ -39,6 +39,13 @@ export type MissingSpeechField = 'model' | 'voice'
  * The provider config can supply them, for example for an OpenAI-compatible provider.
  * A streaming provider needs a model with a resource path. Without one, it uses `defaultModel`, the default model of the provider.
  */
+/** Speech providers whose voice is an ID typed by the user instead of an entry of a voice catalog. */
+const manualVoiceSpeechProviders = new Set(['openai-compatible-audio-speech', 'fish-audio-speech'])
+
+function isManualVoiceSpeechProvider(providerId: string | undefined) {
+  return !!providerId && manualVoiceSpeechProviders.has(providerId)
+}
+
 function resolveSpeechSelection(selection: AiriExtension['modules']['speech'], config: Record<string, unknown>, defaultModel: () => string | null | undefined) {
   const model = selection.model || (typeof config.model === 'string' ? config.model : '')
   const voiceId = selection.voice_id || (typeof config.voice === 'string' ? config.voice : '')
@@ -622,7 +629,7 @@ export const useSpeechStore = defineStore('speech', () => {
       return
 
     let nextVoice: VoiceInfo | undefined
-    if (activeSpeechProvider.value === 'openai-compatible-audio-speech') {
+    if (isManualVoiceSpeechProvider(activeSpeechProvider.value)) {
       nextVoice = {
         id: voiceId,
         name: voiceId,
@@ -826,8 +833,8 @@ export const useSpeechStore = defineStore('speech', () => {
     let hasModel = !!activeSpeechModel.value
     let hasVoice = !!activeSpeechVoiceId.value
 
-    // For OpenAI Compatible providers, check provider config as fallback
-    if (activeSpeechProvider.value === 'openai-compatible-audio-speech') {
+    // For providers whose voice is typed in (OpenAI Compatible, Fish Audio), check provider config as fallback
+    if (isManualVoiceSpeechProvider(activeSpeechProvider.value)) {
       const providerConfig = providerStore.getProviderConfig(activeSpeechProvider.value)
       hasModel ||= !!providerConfig?.model
       hasVoice ||= !!providerConfig?.voice

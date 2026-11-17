@@ -63,6 +63,7 @@ const providerAttributesById = {
   'deepgram-tts': paidCloud,
   'deepseek': paidCloud,
   'elevenlabs': paidCloud,
+  'fish-audio-speech': paidCloud,
   'featherless-ai': paidCloud,
   'fireworks-ai': paidCloud,
   'google-generative-ai': paidCloud,

@@ -432,11 +432,11 @@ async function generateTestSpeech() {
 
   const providerConfig = providerStore.getProviderConfig(activeSpeechProvider.value)
 
-  // For OpenAI Compatible providers, fall back to provider config for model and voice
+  // For providers with a typed voice ID (OpenAI Compatible, Fish Audio), fall back to provider config for model and voice
   let model = activeSpeechModel.value
   let voice = activeSpeechVoice.value
 
-  if (activeSpeechProvider.value === 'openai-compatible-audio-speech') {
+  if (['openai-compatible-audio-speech', 'fish-audio-speech'].includes(activeSpeechProvider.value)) {
     if (!model && providerConfig?.model) {
       model = providerConfig.model as string
     }

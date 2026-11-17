@@ -16,6 +16,7 @@ import { providerDeepSeek } from './cloud/deepseek'
 import { providerElevenLabs } from './cloud/elevenlabs'
 import { providerFeatherlessAI } from './cloud/featherless-ai'
 import { providerFireworksAI } from './cloud/fireworks-ai'
+import { providerFishAudioSpeech } from './cloud/fish-audio'
 import { providerGoogleGeminiAudioSpeech } from './cloud/google-gemini-audio-speech'
 import { providerGoogleGenerativeAI } from './cloud/google-generative-ai'
 import { providerGroq } from './cloud/groq'
@@ -104,6 +105,7 @@ export const portableProviderDefinitions = eraseProviderDefinitions(
   providerElevenLabs,
   providerFeatherlessAI,
   providerFireworksAI,
+  providerFishAudioSpeech,
   providerGoogleGeminiAudioSpeech,
   providerGoogleGenerativeAI,
   providerGroq,
