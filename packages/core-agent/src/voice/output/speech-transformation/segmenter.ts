@@ -1,3 +1,5 @@
+import { endOutsideWritten } from './preprocessor/written'
+
 /** Sentence ends of CJK text. A segment can end right after them. */
 const cjkSentenceEnds = new Set(['。', '！', '？'])
 /** Sentence ends of Latin text. A segment can end after them when a space follows. */
@@ -233,8 +235,9 @@ export class MarkdownSegmenter {
         last = end
     }
 
+    // A `<written>` block reaches the speech text as one segment, so its text can be removed whole.
     if (atEnd && !isOpen(state) && state.fence === undefined && text.length > 0)
-      return text.length
-    return last
+      return endOutsideWritten(text, text.length)
+    return endOutsideWritten(text, last)
   }
 }

@@ -12,7 +12,7 @@ import { unified } from 'unified'
 
 import { detectSpeechLanguage, toSpeechLanguage } from './language'
 import { normalizeMathDelimiters } from './markdown'
-import { mathSpeechPreprocessor, moneySpeechPreprocessor, tokenSpeechPreprocessor } from './preprocessor'
+import { mathSpeechPreprocessor, moneySpeechPreprocessor, tokenSpeechPreprocessor, writtenSpeechPreprocessor } from './preprocessor'
 import { embedWord, imageWord, speakWikiTarget } from './wiki-link'
 
 export interface SpeechTextOptions {
@@ -44,7 +44,7 @@ export interface SpeechTextOptions {
  * Money reads before math, so a price reads before the math plugin looks for bare TeX.
  */
 export function defaultSpeechPreprocessors(): SpeechPreprocessor[] {
-  return [tokenSpeechPreprocessor(), moneySpeechPreprocessor(), mathSpeechPreprocessor()]
+  return [writtenSpeechPreprocessor(), tokenSpeechPreprocessor(), moneySpeechPreprocessor(), mathSpeechPreprocessor()]
 }
 
 /** A delimiter between two ASCII operands is an operator, for example `x**2` or `a*b*c`, not emphasis. */
