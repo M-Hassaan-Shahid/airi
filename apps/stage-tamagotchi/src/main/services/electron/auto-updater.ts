@@ -203,6 +203,7 @@ const statusesWithChanges: ReadonlyArray<AutoUpdaterState['status']> = ['availab
  */
 export function isExternallyUpdatedInstall() {
   return import.meta.env.VITE_DISTRIBUTION === 'steam'
+    || import.meta.env.VITE_DISABLE_UPDATES === 'true'
     || !!process.env.FLATPAK_ID
     || process.env.AIRI_DISTRIBUTION === 'nix'
 }

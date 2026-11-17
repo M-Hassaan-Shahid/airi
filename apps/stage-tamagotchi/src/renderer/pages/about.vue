@@ -44,7 +44,7 @@ const {
 
 const isDisabled = computed(() => updateState.value.status === 'disabled')
 // Only an install that a store or a package manager updates reports `disabled`. Flatpak and Nix are known only at runtime, so the Steam build flag is not enough.
-const isExternallyUpdated = computed(() => import.meta.env.VITE_DISTRIBUTION === 'steam' || isDisabled.value)
+const isExternallyUpdated = computed(() => import.meta.env.VITE_DISTRIBUTION === 'steam' || import.meta.env.VITE_DISABLE_UPDATES === 'true' || isDisabled.value)
 const isLatestVersion = computed(() => {
   return updateState.value.status === 'not-available' && !isDisabled.value
 })

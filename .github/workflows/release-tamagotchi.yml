@@ -121,7 +121,9 @@ jobs:
     if: ${{ needs.updates.outputs.build-installers == 'true' }}
     continue-on-error: ${{ matrix.skip }} # WORKAROUND: Skipping subsequent steps without failing the whole workflow
     env:
-      VITE_ENABLE_ANALYTICS: ${{ github.event_name == 'workflow_dispatch' && inputs.build_only && 'false' || 'true' }}
+      VITE_ENABLE_ANALYTICS: ${{ (github.repository != 'moeru-ai/airi' || (github.event_name == 'workflow_dispatch' && inputs.build_only)) && 'false' || 'true' }}
+      # A build of a fork turns the over-the-air updater off, so the upstream feed never replaces the patched app.
+      VITE_DISABLE_UPDATES: ${{ github.repository != 'moeru-ai/airi' && 'true' || 'false' }}
       # Uploads source maps to Sentry. The build skips the upload when the secret is absent.
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       VITE_REVENUECAT_WEB_KEY: ${{ vars.VITE_REVENUECAT_WEB_KEY }}
@@ -756,7 +758,9 @@ jobs:
     environment: Release
     env:
       # The same build as the installers of this run, so the channel serves the bundle that they ship.
-      VITE_ENABLE_ANALYTICS: ${{ github.event_name == 'workflow_dispatch' && inputs.build_only && 'false' || 'true' }}
+      VITE_ENABLE_ANALYTICS: ${{ (github.repository != 'moeru-ai/airi' || (github.event_name == 'workflow_dispatch' && inputs.build_only)) && 'false' || 'true' }}
+      # A build of a fork turns the over-the-air updater off, so the upstream feed never replaces the patched app.
+      VITE_DISABLE_UPDATES: ${{ github.repository != 'moeru-ai/airi' && 'true' || 'false' }}
       # Uploads source maps to Sentry. The build skips the upload when the secret is absent.
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       VITE_REVENUECAT_WEB_KEY: ${{ vars.VITE_REVENUECAT_WEB_KEY }}
